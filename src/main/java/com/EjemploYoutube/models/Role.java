@@ -17,6 +17,12 @@ public class Role {
     @OneToMany(targetEntity = Usuario.class, mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Usuario> users;
 
+    public Role() { }
+
+    public Role(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

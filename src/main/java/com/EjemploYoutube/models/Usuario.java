@@ -1,6 +1,8 @@
 package com.EjemploYoutube.models;
 
-import com.sun.istack.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 
 import javax.persistence.*;
 
@@ -20,6 +22,7 @@ public class Usuario {
     private String phone;
 
     @Column
+    @JsonIgnore
     private String password;
 
     @ManyToOne
@@ -58,6 +61,7 @@ public class Usuario {
         this.phone = phone;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -70,6 +74,7 @@ public class Usuario {
         this.role = role;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
