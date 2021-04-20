@@ -16,14 +16,6 @@ public class UsuarioRest {
     @Autowired
     private UsuarioDAO usuarioDao;
 
-    @PostMapping("/guardar")
-    public void guardar(@RequestBody Usuario usuario){
-        String pass = usuario.getPassword();
-        pass = new BCryptPasswordEncoder().encode(pass);
-        usuario.setPassword(pass);
-        usuarioDao.save(usuario);
-    }
-
     @GetMapping("/listar")
     public List<Usuario> listar(){
         return usuarioDao.findAll();

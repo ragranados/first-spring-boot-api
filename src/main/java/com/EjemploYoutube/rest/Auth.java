@@ -17,6 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.Optional;
 
+@RequestMapping("/auth")
 @RestController
 public class Auth {
 
@@ -47,25 +48,13 @@ public class Auth {
 
         final UserDetails userDetails = userDetailService.loadUserByUsername(authenticationRequest.getUsername());
 
-        //System.out.println("Usuario: " + userDetails.getUsername());
-
         final String jwt = jwtTokenUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
-    /*@GetMapping("/register")
-    public String showRegistration(WebRequest request, Model model){
-        Usuario usuario = new Usuario();
-        model.addAttribute("Usuario", usuario);
-        return "registration";
-    }*/
-
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Usuario user) throws Exception{
-        //Optional<Role> role = roleDAO.findById(user.getRole().getId());
-        //user.setRole(role.get());
-        //user.setRole(role);
 
         Usuario exist = usuarioDAO.findByEmail(user.getEmail());
 
@@ -73,7 +62,6 @@ public class Auth {
             return ResponseEntity.status(404).body("El correo ya se encuentra registrado");
         }
 
-        //System.out.println(usuarioDAO.findById(7));
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));

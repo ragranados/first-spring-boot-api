@@ -23,15 +23,14 @@ public class UserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("Email: " + email);
+
         Usuario usuario = usuarioDao.findByEmail(email);
 
         if(usuario == null){
             throw new UsernameNotFoundException("Not found");
         }
 
-        //System.out.println("Usuario: " + usuario.getName());
-        return new User(usuario.getEmail(), usuario.getPassword(), new ArrayList<>());
+        return new User(usuario.getEmail(), usuario.getPassword(), getGrantedAuthority(usuario));
     }
 
     private Collection<GrantedAuthority> getGrantedAuthority (Usuario usuario) {
@@ -42,6 +41,8 @@ public class UserDetailService implements UserDetailsService {
         }
 
         authorities.add(new SimpleGrantedAuthority("USER_USER"));
+
+        System.out.println(authorities);
 
         return  new ArrayList<>();
     }

@@ -32,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().antMatchers("/authenticate","/register").permitAll()
+        http.csrf().disable().authorizeRequests().antMatchers("/auth/authenticate","/auth/register").permitAll()
                 .anyRequest().authenticated() //Hasta aqui es para indicar cuales no necesitan autenticacion.
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //Aqui para que spring no cree una sesion.
 
@@ -48,6 +48,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
-        //return NoOpPasswordEncoder.getInstance();
     }
 }
