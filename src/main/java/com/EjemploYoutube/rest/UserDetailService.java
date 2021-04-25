@@ -23,7 +23,6 @@ public class UserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
         Usuario usuario = usuarioDao.findByEmail(email);
 
         if(usuario == null){
@@ -42,8 +41,6 @@ public class UserDetailService implements UserDetailsService {
 
         authorities.add(new SimpleGrantedAuthority("USER_USER"));
 
-        System.out.println(authorities);
-
-        return  new ArrayList<>();
+        return  authorities;
     }
 }

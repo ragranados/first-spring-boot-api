@@ -29,6 +29,9 @@ public class Usuario {
     @JoinColumn(name="role_id")
     private Role role;
 
+    @Column(name = "enabled", columnDefinition = "boolean default false")
+    private boolean enabled;
+
     public Integer getId() {
         return id;
     }
@@ -77,5 +80,13 @@ public class Usuario {
     @JsonProperty
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

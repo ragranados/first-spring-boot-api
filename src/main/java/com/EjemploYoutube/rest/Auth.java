@@ -2,6 +2,7 @@ package com.EjemploYoutube.rest;
 
 import com.EjemploYoutube.dao.RoleDAO;
 import com.EjemploYoutube.dao.UsuarioDAO;
+import com.EjemploYoutube.dao.VerificationTokenDAO;
 import com.EjemploYoutube.models.*;
 import com.EjemploYoutube.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,14 @@ import java.util.Optional;
 @RestController
 public class Auth {
 
-    @Autowired
-    private RoleDAO roleDAO;
+    //@Autowired
+    //private RoleDAO roleDAO;
 
     @Autowired
     private UsuarioDAO usuarioDAO;
+
+    @Autowired
+    private VerificationTokenDAO verificationTokenDAO;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -38,6 +42,7 @@ public class Auth {
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
+
         try{
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getUsername(), authenticationRequest.getPassword())
@@ -67,6 +72,14 @@ public class Auth {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         usuarioDAO.save(user);
 
+
+
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/enable")
+    public ResponseEntity<?> enableAccount(@RequestParam String token){
+
+        return ResponseEntity.ok(token);
     }
 }

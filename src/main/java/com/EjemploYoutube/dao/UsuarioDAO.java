@@ -11,4 +11,5 @@ public interface UsuarioDAO extends JpaRepository<Usuario, Integer> {
 
     @Query("FROM Usuario WHERE email=?1")
     Usuario findByEmail(@Param("email") String email);
+
 }
