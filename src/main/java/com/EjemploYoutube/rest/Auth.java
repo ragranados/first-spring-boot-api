@@ -1,5 +1,6 @@
 package com.EjemploYoutube.rest;
 
+import com.EjemploYoutube.Mail.EmailServiceImpl;
 import com.EjemploYoutube.dao.RoleDAO;
 import com.EjemploYoutube.dao.UsuarioDAO;
 import com.EjemploYoutube.dao.VerificationTokenDAO;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RequestMapping("/auth")
 @RestController
@@ -40,15 +42,29 @@ public class Auth {
     @Autowired
     private JwtUtil jwtTokenUtil;
 
+    @Autowired
+    private EmailServiceImpl emailService;
+
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
+
+        Usuario usuario = usuarioDAO.findByEmail(authenticationRequest.getUsername());
+
+        if(usuario == null){
+            return ResponseEntity.status(400).body("Correo no encontrado");
+        }
+
+        if(!usuario.isEnabled()){
+            return ResponseEntity.status(400).body("Debes activar tu cuenta, revisa tu correo.");
+        }
 
         try{
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getUsername(), authenticationRequest.getPassword())
             );
         }catch (BadCredentialsException e){
-            throw new Exception("Bad credentials", e);
+            return ResponseEntity.status(400).body("Credenciales incorrectas");
+            //throw new Exception("Bad credentials", e);
         }
 
         final UserDetails userDetails = userDetailService.loadUserByUsername(authenticationRequest.getUsername());
@@ -72,7 +88,16 @@ public class Auth {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         usuarioDAO.save(user);
 
+        String newToken = java.util.UUID.randomUUID().toString();
+        VerificationToken verificationToken = new VerificationToken(newToken, user);
 
+        /*emailService.sendActivateAccountMail(
+                user.getEmail(),
+                "Verificacion Spring",
+                "http://localhost:8080/auth/enable?token="+newToken
+        );*/
+
+        verificationTokenDAO.save(verificationToken);
 
         return ResponseEntity.ok(user);
     }
@@ -80,6 +105,20 @@ public class Auth {
     @GetMapping("/enable")
     public ResponseEntity<?> enableAccount(@RequestParam String token){
 
-        return ResponseEntity.ok(token);
+        VerificationToken exists = verificationTokenDAO.findByUUID(token);
+
+        if(exists != null){
+            Usuario usuario = usuarioDAO.findByEmail(exists.getUsuario().getEmail());
+
+            usuario.setEnabled(true);
+
+            usuarioDAO.save(usuario);
+
+            verificationTokenDAO.delete(exists);
+        }else{
+            return ResponseEntity.status(201).body("La cuenta ya ha sido activada!");
+        }
+
+        return ResponseEntity.ok(exists);
     }
 }

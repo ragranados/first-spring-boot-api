@@ -20,6 +20,14 @@ public class VerificationToken {
 
     private Date expiryDate;
 
+    public VerificationToken() { }
+
+    public VerificationToken(String token, Usuario usuario) {
+        this.token = token;
+        this.usuario = usuario;
+        this.expiryDate = new Date();
+    }
+
     private Date calculateExpiryDate(int expiryTimeInMinutes) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Timestamp(cal.getTime().getTime()));
