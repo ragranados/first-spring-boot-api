@@ -32,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().antMatchers("/auth/authenticate","/auth/register","/auth/enable").permitAll()
+        http.csrf().disable().authorizeRequests().antMatchers("/usuarios/listar","/roles/rol","/auth/authenticate","/auth/register","/auth/enable").permitAll()
                 .anyRequest().authenticated() //Hasta aqui es para indicar cuales no necesitan autenticacion.
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //Aqui para que spring no cree una sesion.
 

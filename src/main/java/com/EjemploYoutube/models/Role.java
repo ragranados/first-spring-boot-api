@@ -1,10 +1,14 @@
 package com.EjemploYoutube.models;
 
+import com.fasterxml.jackson.annotation.*;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.Set;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 public class Role {
     @Id
@@ -37,5 +41,13 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Usuario> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<Usuario> users) {
+        this.users = users;
     }
 }
