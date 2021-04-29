@@ -54,9 +54,9 @@ public class Auth {
             return ResponseEntity.status(400).body("Correo no encontrado");
         }
 
-        if(!usuario.isEnabled()){
+        /*if(!usuario.isEnabled()){
             return ResponseEntity.status(400).body("Debes activar tu cuenta, revisa tu correo.");
-        }
+        }*/
 
         try{
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(

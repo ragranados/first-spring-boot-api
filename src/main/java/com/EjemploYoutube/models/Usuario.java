@@ -5,9 +5,9 @@ import lombok.Builder;
 
 import javax.persistence.*;
 
-@JsonIdentityInfo(
+/*@JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+        property = "id")*/
 @Entity
 public class Usuario {
     @Id

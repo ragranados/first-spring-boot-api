@@ -6,9 +6,10 @@ import com.sun.istack.NotNull;
 import javax.persistence.*;
 import java.util.Set;
 
-@JsonIdentityInfo(
+/*@JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+        property = "id")*/
+@JsonIgnoreProperties({"users"})
 @Entity
 public class Role {
     @Id
@@ -18,8 +19,8 @@ public class Role {
     @NotNull
     private String name;
 
-    @OneToMany(targetEntity = Usuario.class, mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Usuario> users;
+    //@OneToMany(targetEntity = Usuario.class, mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //private Set<Usuario> users;
 
     public Role() { }
 
@@ -43,11 +44,11 @@ public class Role {
         this.name = name;
     }
 
-    public Set<Usuario> getUsers() {
+    /*public Set<Usuario> getUsers() {
         return users;
     }
 
     public void setUsers(Set<Usuario> users) {
         this.users = users;
-    }
+    }*/
 }

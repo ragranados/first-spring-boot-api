@@ -35,10 +35,10 @@ public class RoleRest {
 
     @GetMapping("/rol")
     public ResponseEntity rol (){
-        Optional<Role> rol = roleDao.findById(1);
+        //Optional<Role> rol = roleDao.findById(1);
         //Set<Usuario> lista = rol.get().getUsers();
 
-        //List<Usuario> lista = usuarioDAO.findAll();
+        List<Usuario> rol = usuarioDAO.findAll();
 
         return ResponseEntity.ok(rol);
     }
